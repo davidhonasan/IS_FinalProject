@@ -1,7 +1,0 @@
-{
-  "terminal.explorerKind": "external",
-  "code-runner.runInTerminal": true,
-  "python.pythonPath": "C:\\Users\\david\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
-  "python.linting.pylintEnabled": true,
-  "python.linting.enabled": true
-}

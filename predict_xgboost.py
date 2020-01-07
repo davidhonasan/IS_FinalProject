@@ -56,20 +56,22 @@ def stock_predict(symbol):
               eval_metric='rmse')
   y_predicted = xgbModel.predict(X_test)
 
-  X_test = X_test.drop(X_test.columns[[0,1,2,3,4,5,6,7]], axis=1)
-  X_test['prediction'] = float("NaN")
-  X_test['prediction'].iloc[0] = X_test['close'].iloc[0] + y_predicted[0]
+  # X_test = X_test.drop(X_test.columns[[0,1,2,3,4,5,6,7]], axis=1)
+  z_prediction = X_test.drop(X_test.columns[[0,1,2,3,4,5,6,7]], axis=1)
+  # X_test['prediction'] = float("NaN")
+  z_prediction.iloc[0] = X_test['close'].iloc[0] + y_predicted[0]
 
   for x in range(len(X_test)-1):
-      X_test['prediction'].iloc[x+1] = X_test['prediction'].iloc[x] + y_predicted[x+1] 
+      z_prediction.iloc[x+1] = z_prediction.iloc[x] + y_predicted[x+1] 
 
-  print("RMSE:", sqrt(mean_squared_error(y_test, y_predicted)))
+  rmse = sqrt(mean_squared_error(y_test, y_predicted))
+  print("RMSE:", rmse)
   print("R2 Score:", r2_score(y_test, y_predicted))
 
   plt.subplot(2,1,1)
   plt.plot(X_train['close'], label="Train")
   plt.plot(X_test['close'], label="Test")
-  plt.plot(X_test['prediction'], label="Prediction")
+  plt.plot(z_prediction, label="Prediction")
   plt.title(symbol + ' | Acc: ' + str(r2_score(y_test, y_predicted)*100) + '%' )
   plt.legend()
   plt.xlabel("Year")
@@ -81,16 +83,16 @@ def stock_predict(symbol):
   plt.legend()
   plt.xlabel("Tree nodes")
   plt.ylabel("RMSE")
-  # fig = plt.figure(figsize=(8,8))
-  # plt.xticks(rotation='vertical')
-  # print(xgbModel.feature_importances_)
+  
   # plt.subplot(3,1,3)
-  # plt.bar([i for i in range(len(xgbModel.feature_importances_))], xgbModel.feature_importances_.tolist(), tick_label=X_train.columns, color="chocolate")
+  # plt.bar([i for i in range(len(xgbModel.feature_importances_))], xgbModel.feature_importances_.tolist(), tick_label=X_test.columns, color="chocolate")
   plt.show()
+
+  return rmse
 
 if __name__ == "__main__":
   stock_predict("MSFT")
-  stock_predict("AAPL")
-  stock_predict("NFLX")
-  stock_predict("TSLA")
-  stock_predict("FB")
+  # stock_predict("AAPL")
+  # stock_predict("NFLX")
+  # stock_predict("TSLA")
+  # stock_predict("FB")

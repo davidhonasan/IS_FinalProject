@@ -6,6 +6,7 @@ from sklearn.svm import SVR
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from math import sqrt
+from predict_xgboost import stock_predict
 
 # FB, AAPL, DIS
 quandl.ApiConfig.api_key = "EMUFhFWXZLfbkxVVx_Tx"
@@ -99,6 +100,7 @@ print(dis[2])
 
 rmse_lr = [fb[3], apple[3], dis[3]]
 rmse_svm = [fb[4], apple[4], dis[4]]
+xgboost = [stock_predict("FB"), stock_predict("AAPL"), stock_predict("DIS")]
 company = ["Facebook", "Apple", "Disney"]
 
 #Plotting 
@@ -120,6 +122,7 @@ axs[1, 0].legend()
 axs[1, 0].set_title('Disney')
 axs[1, 1].plot(company, rmse_lr, label="rmse_lr")
 axs[1, 1].plot(company, rmse_svm, label="rmse_svm")
+axs[1, 1].plot(company, xgboost, label="rmse_xgboost")
 axs[1, 1].legend()
 axs[1, 1].set_title('RMSE')
 
